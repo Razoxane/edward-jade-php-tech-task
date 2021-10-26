@@ -1,48 +1,104 @@
-__Language :__ English | [Bahasa Indonesia](README_ID.md)
+__Language :__ English
 
-# PHP Technical Task
-Suggested recipes for lunch API
+# Lunch API
 
-## Time management
-There is no deadline to do this tech task. It's up to you how you manage your time to accomplish at least the requirements.
+Returns recipes you can make with the ingredients in the fridge which are before their use-by dates, for a given date, defaulting to the request date.
 
-## Assessment
+Recipes that require ingredients after their best-before date will be sorted to the bottom of the list.
 
-Our assessment criteria will pay attention on:
-- How the application is structured.
-- Code quality (Clean code).
-- Quality of tests.
-- Interpretation of the problem.
-- Use of `git`.
-- Implementation and final execution.
-- Commits, as this will allow us to understand some of the decisions you make throughout the process.
+## Installation
 
-## User Story
-As a User I would like to make a request to an API that will determine from a set of recipes what I can have for lunch today based on the contents of my fridge, so that I quickly decide what I’ll be having.
+### Requirements
+- PHP 7.3
+- Composer 1.x
 
-__Acceptance Criteria__
-- Given that I have made a request to the `/lunch` endpoint I should receive a `JSON` response of the recipes 
-that I can prepare based on the availability of ingredients in my fridge.
-- Given that an ingredient is past its `use-by` date (inclusive), I should not receive recipes containing this ingredient.
-- Given that an ingredient is past its `best-before` date (inclusive), but is still within its `use-by` date (inclusive), any recipe containing the oldest (less fresh) ingredient should placed at the bottom of the response object.
+### Build Steps
+1. Clone the repo to the folder of choice on your local machine.
+    ```sh
+    $ git clone git@github.com:Razoxane/edward-jade-php-tech-task.git
+    ```
 
-__Additional Criteria__
-- The application SHOULD contains unit / integration tests (e.g. `PHPUnit`).
-- The application MUST be completed using an `OOP` approach.
-- The application MUST be `PSR` compliant.
-- Any dependencies MUST be installed using `Composer` (no need to commit dependencies, the
-composer.lock file will be sufficient).
-- Use `PHP5.6` or `PHP7`.
-- Any installation, build steps, testing and usage instructions MUST be provided in a `README.md` file in the root of the application.
+2. In the root directory of the cloned repo, run the following commands:
+    ```sh
+    $ compose install --dev
+    $ symfony serve --port=1080
+    ```
 
-## Framework
-Use the `Symfony micro framework` (https://symfony.com/doc/current/setup.html) to create the application API. 
+### Testing
+Run the following in the root directory of the project:
+```sh
+$ ./bin/phpunit
+```
 
-## Application Data
-For the purpose of this task, the application should simply read data from 2 x JSON files. The contents for these files can be found [here](src/App/Ingredient/data.json) and [here](src/App/Recipe/data.json).
- 
-## Submission
-The application should be committed to a __public repository__ on `GitHub` or `BitBucket` (`<lastname>-<firstname>-techtask-php`) and simply send us a link to the repository.
 
-## Bonus
-Configure a `Docker` environment so that we can test and run the application quickly. The application should be installed with a single command.
+## API Usage Instructions
+
+### URL
+```
+/lunch/?date=YYYY-MM-DD
+```
+
+### Method
+```
+GET
+```
+
+### URL Params
+Optional:
+- `date=[YYYY-MM-DD]` ISO 8601 Date format.
+
+### Success Response
+- Code: 200
+- Content:
+    ```
+    {
+        "recipes": [{
+            "title": "Recipe 1",
+            "ingredients": [
+                "Ingredient 1",
+                "Ingredient 2",
+            ]
+        }, {
+            "title": "Recipe 2",
+            "ingredients": [
+                "Ingredient 3",
+                "Ingredient 4",
+            ]
+        }]
+    }
+    ```
+
+### Error Response
+- Code: 400
+- Content:
+    ```
+    {
+        "status": 400,
+        "message": "Value provided for date is an invalid format. YYYY-MM-DD required."
+    }
+    ```
+    OR
+    ```
+    {
+        "status": 400,
+        "message": "Value provided for date is an invalid value. Valid date in the format of YYYY-MM-DD required."
+    }
+    ```
+
+### Sample Calls
+#### cURL
+```sh
+$ curl -X GET 'http://127.0.0.1:1080/lunch?date=2019-03-19'
+```
+#### jQuery
+```JavaScript
+var settings = {
+  "url": "http://127.0.0.1:1080/lunch?date=2019-03-19",
+  "method": "GET",
+  "timeout": 0,
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
