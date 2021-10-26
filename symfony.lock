@@ -1,4 +1,7 @@
 {
+    "doctrine/collections": {
+        "version": "1.6.8"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
