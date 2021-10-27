@@ -1,0 +1,25 @@
+version: "3.4"
+
+services:
+
+  lunch_php:
+    build:
+      context: ".."
+      dockerfile: "docker/php/Dockerfile"
+    hostname: "lunch-php"
+    env_file:
+      - ../.env
+    environment:
+      PS1: "\\u@\\h:\\w\\$$ "
+
+  lunch_nginx:
+    build:
+      context: ".."
+      dockerfile: "docker/nginx/Dockerfile"
+    hostname: "lunch-nginx"
+    ports:
+      - "1080:80"
+    depends_on:
+      - "lunch_php"
+    environment:
+      PS1: "\\u@\\h:\\w\\$$ "

@@ -6,7 +6,44 @@ Returns recipes you can make with the ingredients in the fridge which are before
 
 Recipes that require ingredients after their best-before date will be sorted to the bottom of the list.
 
-## Installation
+## Docker Installation
+
+### Requirements
+
+- [Docker](https://docs.docker.com/get-docker/)
+- [Make](https://www.gnu.org/software/make/)
+
+### Build Steps
+
+1. Clone the repo to the folder of choice on your local machine.
+    ```sh
+    $ git clone git@github.com:Razoxane/edward-jade-php-tech-task.git
+    ```
+
+2. In the root directory of the cloned repo, run the following command to build and start the containers, and run the tests.
+    ```sh
+    $ make -C docker/ all
+    ```
+
+3. When you're finished, clean up by running:
+    ```sh
+    $ make -C docker/ down
+    ```
+
+4. If you prefer to peform the same commands as `all` and have the project clean up after itself, run:
+    ```sh
+    $ make -C docker/ all_and_cleanup
+    ```
+
+### Testing
+The following command executes:
+- PHPUnit in the TestDox format within the container
+- cURL calls against the container's exposed host address, testing the endpoint with different parameters.
+```sh
+$ make -C docker/ tests
+```
+
+## Local Installation (only if you aren't using Docker)
 
 ### Requirements
 - PHP 7.3
@@ -29,7 +66,6 @@ Run the following in the root directory of the project:
 ```sh
 $ ./bin/phpunit
 ```
-
 
 ## API Usage Instructions
 

@@ -1,0 +1,8 @@
+.DS_Store
+.cache
+.dockerignore
+.git
+.gitignore
+.idea
+config/packages/dev
+vendor
